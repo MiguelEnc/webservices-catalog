@@ -12,7 +12,6 @@ const MongoConnector = () => {
     };
 
     const connect = async (): Promise<void> => {
-        await disconnect();
         try {
             await mongoose.connect(config.db.url, mongoOptions);
             logger.info(NAMESPACE, 'MongoDB connected.');
