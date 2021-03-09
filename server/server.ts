@@ -1,35 +1,29 @@
-import express from "express";
-import morgan from "morgan";
-import helmet from "helmet";
-import bodyParser from "body-parser";
+import express from 'express';
+import logger from './src/utility/logger';
+import config from './config/config';
 
-class Server {
-  app: express.Application;
+import morgan from 'morgan';
+import helmet from 'helmet';
+import compression from 'compression';
 
-  constructor() {
-    this.app = express();
-    this.config();
-    this.initRoutes();
-  }
-  
-  config() {
-    this.app.set("port", process.env.PORT || 3000);
-    this.app.use(morgan("dev"));
-    this.app.use(helmet());
-    this.app.use(bodyParser.urlencoded({ extended: false }));
-    this.app.use(bodyParser.json());
-  }
+import MongoConnector from './database';
 
-  initRoutes() {
-    this.app.use("/", (req, res) => res.send("OK."));
-  }
+const NAMESPACE = 'Server';
 
-  start() {
-    const PORT = this.app.get("port");
-    this.app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
-  }
-  
-}
+const app = express();
 
-const server = new Server();
-server.start();
+// Database connection
+MongoConnector.connect();
+
+// Middleware initialization
+app.use(express.urlencoded({ extended: false }));
+app.use(express.json());
+app.use(morgan('dev'));
+app.use(compression());
+app.use(helmet());
+
+app.use('/', (req, res) => res.send('OK.'));
+
+app.listen(config.server.port, () =>
+    logger.info(NAMESPACE, `Server running on ${config.server.host}:${config.server.port}`)
+);
