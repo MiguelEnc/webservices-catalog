@@ -7,6 +7,7 @@ import helmet from 'helmet';
 import compression from 'compression';
 
 import MongoConnector from './database';
+import UserRoutes from './src/domains/user/user.router';
 
 const NAMESPACE = 'Server';
 
@@ -23,6 +24,7 @@ app.use(compression());
 app.use(helmet());
 
 app.use('/', (req, res) => res.send('OK.'));
+app.use('/api/users', UserRoutes);
 
 app.listen(config.server.port, () =>
     logger.info(NAMESPACE, `Server running on ${config.server.host}:${config.server.port}`)
