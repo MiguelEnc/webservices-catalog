@@ -1,5 +1,5 @@
 import { Schema } from 'mongoose';
-import UserModel from './user.model';
+import UserModel, { User } from './user.model';
 import UserAlreadyExistisError from './errors/UserAlreadyExistsError';
 
 const UserService = {
@@ -7,27 +7,27 @@ const UserService = {
         return await UserModel.find({});
     },
 
-    createNew: async (name: String, email: String, teamId: String) => {
+    createNew: async (newUser: User) => {
         // Check if an user with same email already exists
-        let user = await UserModel.findOne({ email });
+        let user = await UserModel.findOne({ email: newUser.email });
         if (user) {
-            throw new UserAlreadyExistisError(email);
+            throw new UserAlreadyExistisError(newUser.email);
         }
 
-        user = new UserModel({
-            name,
-            email,
-            team: teamId
-        });
+        user = new UserModel(newUser);
 
         await user.save();
 
         return user;
     },
 
-    updateTeam: async (id: String, teamId: Schema.Types.ObjectId) => {
-        let user = await UserModel.findByIdAndUpdate(id, { team: teamId });
+    updateUSerTeam: async (id: String, teamId: Schema.Types.ObjectId) => {
+        let user = await UserModel.findByIdAndUpdate(id, { team: teamId }, { new: true });
         return user;
+    },
+
+    deleteUSer: async (id: String) => {
+        await UserModel.findByIdAndDelete(id);
     }
 };
 

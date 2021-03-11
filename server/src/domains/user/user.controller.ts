@@ -3,6 +3,7 @@ import { Schema } from 'mongoose';
 import { validationResult } from 'express-validator';
 import UserService from './user.service';
 import Logger from '../../utility/logger';
+import { User } from './user.model';
 
 const UserController = () => {
     const NAMESPACE = 'Users';
@@ -10,13 +11,18 @@ const UserController = () => {
     const register = async (req: Request, res: Response) => {
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
-            Logger.error(NAMESPACE, 'Request validation error', errors);
+            Logger.error(NAMESPACE, 'User registration - Request validation error');
             return res.status(400).json({ errors: errors.array() });
         }
 
         try {
             const { name, email, teamId } = req.body;
-            const user = await UserService.createNew(name, email, teamId);
+            const newUser: User = {
+                name,
+                email,
+                team: teamId
+            };
+            const user = await UserService.createNew(newUser);
 
             res.json({ user });
         } catch (err) {
@@ -28,7 +34,7 @@ const UserController = () => {
     const findAll = async (req: Request, res: Response) => {
         try {
             const users = await UserService.findAll();
-            return users;
+            res.json({ users });
         } catch (err) {
             Logger.error(NAMESPACE, err.message, err);
             return res
@@ -39,11 +45,10 @@ const UserController = () => {
 
     const update = async (req: Request, res: Response) => {
         try {
-            const { teamId } = req.body;
             const { id } = req.params;
-            const team: Schema.Types.ObjectId = teamId;
+            const team: Schema.Types.ObjectId = req.body.teamId;
 
-            let user = await UserService.updateTeam(id, team);
+            let user = await UserService.updateUSerTeam(id, team);
             res.json({ user });
         } catch (err) {
             Logger.error(NAMESPACE, err.message, err);
@@ -51,10 +56,22 @@ const UserController = () => {
         }
     };
 
+    const deleteUser = async (req: Request, res: Response) => {
+        try {
+            const { id } = req.params;
+            await UserService.deleteUSer(id);
+            res.json({ msg: 'Deleted succesfully.' });
+        } catch (err) {
+            Logger.error(NAMESPACE, err.message, err);
+            return res.status(400).json({ errors: [{ msg: 'An error occurred deleting user.' }] });
+        }
+    };
+
     return {
         register,
         findAll,
-        update
+        update,
+        deleteUser
     };
 };
 

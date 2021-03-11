@@ -1,6 +1,6 @@
-import { model, Schema, Document } from 'mongoose';
+import { model, Schema } from 'mongoose';
 
-export interface User extends Document {
+export interface User {
     name: String;
     email: String;
     team: Schema.Types.ObjectId;
@@ -24,4 +24,4 @@ const UserSchema: Schema = new Schema({
     }
 });
 
-export default model<User>('User', UserSchema);
+export default model('User', UserSchema);

@@ -16,7 +16,10 @@ router.get('/', UserController.findAll);
  */
 router.post(
     '/',
-    [body('name', 'Name is required').not().isEmpty(), body('email').isEmail().normalizeEmail()],
+    [
+        body('name', 'Name is required').not().isEmpty(),
+        body('email', 'Email is required').isEmail().normalizeEmail()
+    ],
     UserController.register
 );
 
@@ -24,6 +27,12 @@ router.post(
  * @route       PUT api/users/:id
  * @description Update user team by user id
  */
-router.put('/:id', [body('teamId')], UserController.update);
+router.put('/:id', [body('teamId')], UserController.update); // TODO: probar
+
+/**
+ * @route       DELETE api/users/:id
+ * @description Deletes the user with the given id
+ */
+router.delete('/:id', UserController.deleteUser);
 
 export default router;
