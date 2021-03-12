@@ -1,4 +1,4 @@
-import { Schema, model } from 'mongoose';
+import { Schema, model, Document } from 'mongoose';
 
 export interface Team {
     name: String;
@@ -6,6 +6,8 @@ export interface Team {
     members: Array<Schema.Types.ObjectId>;
     services: Array<Schema.Types.ObjectId>;
 }
+
+interface TeamDocument extends Team, Document {}
 
 const TeamSchema: Schema = new Schema({
     name: {
@@ -33,4 +35,4 @@ const TeamSchema: Schema = new Schema({
     ]
 });
 
-export default model('Team', TeamSchema);
+export default model<TeamDocument>('Team', TeamSchema);
