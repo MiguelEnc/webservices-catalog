@@ -1,8 +1,7 @@
-import { Schema } from 'mongoose';
 import TeamModel, { Team } from './team.model';
 import TeamAlreadyExistsError from './errors/TeamAlreadyExistsError';
 import TeamNotFoundError from './errors/TeamNotFoundError';
-import AlreadyContainsElementError from '../../utility/AlreadyContainsElementError';
+import _ from 'underscore';
 
 const TeamService = {
     findAll: async () => {
@@ -30,37 +29,29 @@ const TeamService = {
         return team;
     },
 
-    addMember: async (id: String, user: Schema.Types.ObjectId) => {
+    addMember: async (id: String, users: Array<String>) => {
         let team = await TeamModel.findById(id);
         if (!team) {
             throw new TeamNotFoundError(id);
         }
 
-        if (team.members.includes(user)) {
-            throw new AlreadyContainsElementError('Team', 'Member');
-        }
-
         team = await TeamModel.findByIdAndUpdate(
             id,
-            { members: [...team.members, user] },
+            { members: [...team.members, ...users] },
             { new: true }
         );
         return team;
     },
 
-    addService: async (id: String, service: Schema.Types.ObjectId) => {
+    addService: async (id: String, services: Array<String>) => {
         let team = await TeamModel.findById(id);
         if (!team) {
             throw new TeamNotFoundError(id);
         }
 
-        if (team.members.includes(service)) {
-            throw new AlreadyContainsElementError('Team', 'Service');
-        }
-
         team = await TeamModel.findByIdAndUpdate(
             id,
-            { services: [...team.services, service] },
+            { services: [...team.services, ...services] },
             { new: true }
         );
         return team;
