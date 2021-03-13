@@ -44,6 +44,12 @@ const UserController = () => {
     };
 
     const update = async (req: Request, res: Response) => {
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            Logger.error(NAMESPACE, 'User update - Request validation error');
+            return res.status(400).json({ errors: errors.array() });
+        }
+
         try {
             const { id } = req.params;
             const team: Schema.Types.ObjectId = req.body.teamId;
