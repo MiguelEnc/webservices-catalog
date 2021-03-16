@@ -15,7 +15,7 @@ const TeamController = () => {
             Logger.error(NAMESPACE, err.message, err);
             return res
                 .status(400)
-                .json({ errors: [{ msg: 'An error occurred retrieving teams.' }] });
+                .json({ error: true, messages: [{ msg: 'An error occurred retrieving teams.' }] });
         }
     };
 
@@ -28,7 +28,7 @@ const TeamController = () => {
             Logger.error(NAMESPACE, err.message, err);
             return res
                 .status(400)
-                .json({ errors: [{ msg: 'An error occurred retrieving team.' }] });
+                .json({ error: true, messages: [{ msg: 'An error occurred retrieving team.' }] });
         }
     };
 
@@ -36,7 +36,7 @@ const TeamController = () => {
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
             Logger.error(NAMESPACE, 'Team registration - Request validation error');
-            return res.status(400).json({ errors: errors.array() });
+            return res.status(400).json({ error: true, messages: errors.array() });
         }
 
         try {
@@ -52,7 +52,9 @@ const TeamController = () => {
             res.json({ newTeam });
         } catch (err) {
             Logger.error(NAMESPACE, err.message, err);
-            return res.status(400).json({ errors: [{ msg: 'An error occurred creating team.' }] });
+            return res
+                .status(400)
+                .json({ error: true, messages: [{ msg: 'An error occurred creating team.' }] });
         }
     };
 
@@ -72,7 +74,9 @@ const TeamController = () => {
             res.json({ team: updatedTeam });
         } catch (err) {
             Logger.error(NAMESPACE, err.message, err);
-            return res.status(400).json({ errors: [{ msg: 'An error occurred updating team.' }] });
+            return res
+                .status(400)
+                .json({ error: true, messages: [{ msg: 'An error occurred updating team.' }] });
         }
     };
 
@@ -83,7 +87,9 @@ const TeamController = () => {
             res.json({ msg: 'Deleted succesfully.' });
         } catch (err) {
             Logger.error(NAMESPACE, err.message, err);
-            return res.status(400).json({ errors: [{ msg: 'An error occurred deleting team.' }] });
+            return res
+                .status(400)
+                .json({ error: true, messages: [{ msg: 'An error occurred deleting team.' }] });
         }
     };
 

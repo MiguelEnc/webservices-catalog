@@ -1,7 +1,6 @@
 import TeamModel, { Team } from './team.model';
 import TeamAlreadyExistsError from './errors/TeamAlreadyExistsError';
 import TeamNotFoundError from './errors/TeamNotFoundError';
-import _ from 'underscore';
 
 const TeamService = {
     findAll: async () => {

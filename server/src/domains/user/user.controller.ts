@@ -12,7 +12,7 @@ const UserController = () => {
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
             Logger.error(NAMESPACE, 'User registration - Request validation error');
-            return res.status(400).json({ errors: errors.array() });
+            return res.status(400).json({ error: true, messages: errors.array() });
         }
 
         try {
@@ -27,7 +27,9 @@ const UserController = () => {
             res.json({ user });
         } catch (err) {
             Logger.error(NAMESPACE, err.message, err);
-            return res.status(400).json({ errors: [{ msg: 'User already exists' }] });
+            return res
+                .status(400)
+                .json({ error: true, messages: [{ msg: 'User already exists' }] });
         }
     };
 
@@ -39,7 +41,7 @@ const UserController = () => {
             Logger.error(NAMESPACE, err.message, err);
             return res
                 .status(400)
-                .json({ errors: [{ msg: 'An error occurred retrieving users.' }] });
+                .json({ error: true, messages: [{ msg: 'An error occurred retrieving users.' }] });
         }
     };
 
@@ -47,7 +49,7 @@ const UserController = () => {
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
             Logger.error(NAMESPACE, 'User update - Request validation error');
-            return res.status(400).json({ errors: errors.array() });
+            return res.status(400).json({ error: true, messages: errors.array() });
         }
 
         try {
@@ -58,7 +60,9 @@ const UserController = () => {
             res.json({ user });
         } catch (err) {
             Logger.error(NAMESPACE, err.message, err);
-            return res.status(400).json({ errors: [{ msg: 'An error occurred updating user.' }] });
+            return res
+                .status(400)
+                .json({ error: true, messages: [{ msg: 'An error occurred updating user.' }] });
         }
     };
 
@@ -69,7 +73,9 @@ const UserController = () => {
             res.json({ msg: 'Deleted succesfully.' });
         } catch (err) {
             Logger.error(NAMESPACE, err.message, err);
-            return res.status(400).json({ errors: [{ msg: 'An error occurred deleting user.' }] });
+            return res
+                .status(400)
+                .json({ error: true, messages: [{ msg: 'An error occurred deleting user.' }] });
         }
     };
 
