@@ -9,6 +9,7 @@ import compression from 'compression';
 import MongoConnector from './database';
 import UserRoutes from './src/domains/user/user.router';
 import TeamRoutes from './src/domains/team/team.router';
+import WebServiceRoutes from './src/domains/webservice/webservice.router';
 
 const NAMESPACE = 'Server';
 
@@ -27,6 +28,7 @@ app.use(helmet());
 // Routes definitions
 app.use('/api/users', UserRoutes);
 app.use('/api/teams', TeamRoutes);
+app.use('/api/services', WebServiceRoutes);
 
 app.listen(config.server.port, () =>
     logger.info(NAMESPACE, `Server running on ${config.server.host}:${config.server.port}`)
