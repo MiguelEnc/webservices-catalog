@@ -7,9 +7,7 @@ import helmet from 'helmet';
 import compression from 'compression';
 
 import MongoConnector from './database';
-import UserRoutes from './src/domains/user/user.router';
-import TeamRoutes from './src/domains/team/team.router';
-import WebServiceRoutes from './src/domains/webservice/webservice.router';
+import Routes from './src/routes';
 
 const NAMESPACE = 'Server';
 
@@ -26,9 +24,9 @@ app.use(compression());
 app.use(helmet());
 
 // Routes definitions
-app.use('/api/users', UserRoutes);
-app.use('/api/teams', TeamRoutes);
-app.use('/api/services', WebServiceRoutes);
+app.use('/api/users', Routes.user);
+app.use('/api/teams', Routes.team);
+app.use('/api/services', Routes.service);
 
 app.listen(config.server.port, () =>
     logger.info(NAMESPACE, `Server running on ${config.server.host}:${config.server.port}`)
