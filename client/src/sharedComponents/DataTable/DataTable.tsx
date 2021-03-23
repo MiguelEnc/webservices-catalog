@@ -1,13 +1,15 @@
 import React, { forwardRef } from 'react';
 import MaterialTable, { Action, Column, Icons, Localization, Options } from 'material-table';
-import ArrowDownward from '@material-ui/icons/ArrowDownward';
-import ChevronLeft from '@material-ui/icons/ChevronLeft';
-import ChevronRight from '@material-ui/icons/ChevronRight';
-import Clear from '@material-ui/icons/Clear';
-import DeleteOutline from '@material-ui/icons/DeleteOutline';
-import FirstPage from '@material-ui/icons/FirstPage';
-import LastPage from '@material-ui/icons/LastPage';
-import Search from '@material-ui/icons/Search';
+import {
+    ArrowDownward,
+    ChevronLeft,
+    ChevronRight,
+    Clear,
+    DeleteOutline,
+    FirstPage,
+    LastPage,
+    Search
+} from '@material-ui/icons';
 
 export interface DataTableProps<RowData extends object> {
     columns: Column<RowData>[];
