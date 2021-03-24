@@ -8,7 +8,8 @@ import {
     DeleteOutline,
     FirstPage,
     LastPage,
-    Search
+    Search,
+    ArrowForward
 } from '@material-ui/icons';
 
 export interface DataTableProps<RowData extends object> {
@@ -16,6 +17,8 @@ export interface DataTableProps<RowData extends object> {
     data: RowData[];
     editButton: boolean;
     editFunc?: (event: any, data: RowData | RowData[]) => void;
+    deleteButton: boolean;
+    deleteFunc?: (event: any, data: RowData | RowData[]) => void;
     pagination?: boolean;
 }
 
@@ -24,6 +27,8 @@ export default function DataTable<RowData extends object>({
     data,
     editButton = false,
     editFunc = (event: any, data: any) => console.log('Edit CLicked'),
+    deleteButton = false,
+    deleteFunc = (event: any, data: any) => console.log('Delete CLicked'),
     pagination = true
 }: DataTableProps<RowData>) {
     const tableIcons: Icons = {
@@ -44,6 +49,12 @@ export default function DataTable<RowData extends object>({
         actions.push({
             icon: 'create',
             onClick: editFunc
+        });
+    }
+    if (deleteButton) {
+        actions.push({
+            icon: 'delete',
+            onClick: deleteFunc
         });
     }
 
