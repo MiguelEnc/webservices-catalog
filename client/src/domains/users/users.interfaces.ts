@@ -1,11 +1,14 @@
-export interface UserTableData {
-    id?: string;
-    name: string;
-    email: string;
-    team: UserTeam;
+// Squema of the GET / service response
+export interface UsersListResponse {
+    users: UserTableData[];
 }
 
-interface UserTeam {
-    id: string;
+export interface UserTableData {
+    _id: string;
     name: string;
+    email: string;
+    team: {
+        _id: string;
+        name: string;
+    };
 }
